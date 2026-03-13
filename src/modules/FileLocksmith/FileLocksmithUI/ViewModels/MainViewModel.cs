@@ -79,8 +79,22 @@ namespace PowerToys.FileLocksmithUI.ViewModels
 
         public MainViewModel()
         {
-            paths = NativeMethods.ReadPathsFromFile();
-            Logger.LogInfo($"Starting FileLocksmith with {paths.Length} files selected.");
+            var cmdArgs = Environment.GetCommandLineArgs();
+
+            // Skip the exe path (index 0) and ignore flag arguments (start with --)
+            var cliPaths = cmdArgs.Skip(1).Where(arg => !arg.StartsWith("--", StringComparison.Ordinal)).ToArray();
+
+            if (cliPaths.Length > 0)
+            {
+                paths = cliPaths;
+                Logger.LogInfo($"Starting FileLocksmith with {paths.Length} files from command line.");
+            }
+            else
+            {
+                paths = NativeMethods.ReadPathsFromFile();
+                Logger.LogInfo($"Starting FileLocksmith with {paths.Length} files selected.");
+            }
+
             LoadProcessesCommand = new AsyncRelayCommand(LoadProcessesAsync);
         }
 
