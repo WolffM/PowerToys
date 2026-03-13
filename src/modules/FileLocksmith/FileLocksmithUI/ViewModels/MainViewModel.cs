@@ -81,8 +81,8 @@ namespace PowerToys.FileLocksmithUI.ViewModels
         {
             var cmdArgs = Environment.GetCommandLineArgs();
 
-            // Skip the exe path (index 0) and ignore flag arguments (start with --)
-            var cliPaths = cmdArgs.Skip(1).Where(arg => !arg.StartsWith("--", StringComparison.Ordinal)).ToArray();
+            // Skip the exe path (index 0) and ignore the known internal --elevated flag
+            var cliPaths = cmdArgs.Skip(1).Where(arg => !arg.Equals("--elevated", StringComparison.OrdinalIgnoreCase)).ToArray();
 
             if (cliPaths.Length > 0)
             {
