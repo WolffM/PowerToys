@@ -14,6 +14,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using ManagedCommon;
 using PowerToys.FileLocksmithLib.Interop;
+using PowerToys.FileLocksmithUI.Helpers;
 
 namespace PowerToys.FileLocksmithUI.ViewModels
 {
@@ -79,10 +80,7 @@ namespace PowerToys.FileLocksmithUI.ViewModels
 
         public MainViewModel()
         {
-            var cmdArgs = Environment.GetCommandLineArgs();
-
-            // Skip the exe path (index 0) and ignore the known internal --elevated flag
-            var cliPaths = cmdArgs.Skip(1).Where(arg => !arg.Equals("--elevated", StringComparison.OrdinalIgnoreCase)).ToArray();
+            var cliPaths = CliArgHelper.GetPathsFromArgs(Environment.GetCommandLineArgs());
 
             if (cliPaths.Length > 0)
             {
